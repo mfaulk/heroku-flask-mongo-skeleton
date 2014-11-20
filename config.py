@@ -6,7 +6,7 @@ class Config(object):
 	TESTING = False
 	CSRF_ENABLED = True
 	SECRET_KEY = 'too-many-secrets'
-
+	HEROKUHQ_URL = 'mongodb://mfaulk:northu5P@dogen.mongohq.com:10059/northwind_staging'
 class ProductionConfig(Config):
 	DEBUG = False
 
