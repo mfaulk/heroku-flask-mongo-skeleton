@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from flask import render_template
-from pymongo import MongoClient
+from mongoengine import *
 import datetime
 
 app = Flask(__name__)
@@ -13,18 +13,19 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 #MONGO_URL = os.environ.get('MONGOHQ_URL')
 #client = MongoClient(MONGO_URL)
 
-client = MongoClient()
-db = client.test
+# mongoengine config
+DB_NAME = 'test'
+connect(DB_NAME)
 
-post = {"author": "Matt",
-		"text": "sample post",
-		"tags": ["heroku", "flask", "pymongo"],
-		"date": datetime.datetime.utcnow()}
+class User(Document):
+	email = StringField(required=True)
+	first_name = StringField(max_length=50)
+	last_name = StringField(max_length=50)
 
-posts = db.posts
-post_id = posts.insert(post)
-app.logger.debug("Post ID: " + str(post_id))
-app.logger.debug(db.collection_names()) 
+ross = User(email='ross@example.com', first_name='Ross', last_name='Lawley').save()
+
+for user in User.objects:
+	app.logger.debug(user.first_name)
 
 @app.route('/')
 def home():
