@@ -2,8 +2,11 @@ import os
 
 from flask import Flask
 from flask import render_template
-from mongoengine import *
+from mongoengine import connect
+from models import *
+
 import datetime
+
 
 app = Flask(__name__)
 # For Heroku, something like
@@ -17,12 +20,8 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 DB_NAME = 'test'
 connect(DB_NAME)
 
-class User(Document):
-	email = StringField(required=True)
-	first_name = StringField(max_length=50)
-	last_name = StringField(max_length=50)
 
-ross = User(email='ross@example.com', first_name='Ross', last_name='Lawley').save()
+ross = User(email='Ben@example.com', first_name='Ben', last_name='Bitdiddle').save()
 
 for user in User.objects:
 	app.logger.debug(user.first_name)
